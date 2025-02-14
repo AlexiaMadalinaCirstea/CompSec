@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script>
+        alert("🚨 Tracking activated! Your IP and location have been reported.");
+        fetch("/log-attacker", { method: "POST" }); // Log their attempt
+    </script>
+
+    <div class="container">
+        <h2>Admin Panel</h2>
+        <p>Welcome, admin! You have full access to the system.</p>
+        <p><b>Access Level:</b> <span id="access-level">Full</span></p>
+        <p>Loading sensitive data...</p>
+    </div>
+</body>
+</html>

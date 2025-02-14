@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Signup Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Secure Signup</h2>
+        <form id="signupForm" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required pattern="^[a-zA-Z0-9_-]{3,16}$" title="Username must be 3-16 characters and contain only letters, numbers, underscores, or hyphens.">
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+            <p><small>Password must be at least 8 characters, with uppercase, lowercase, numbers, and symbols.</small></p>
+
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" required>
+
+            <!-- hCaptcha integration -->
+            <div class="h-captcha" data-sitekey="c62a972e-3bb2-43d0-8912-70eaa28a8f6a"></div>
+
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+            const captchaResponse = document.querySelector(".h-captcha iframe").contentWindow.hcaptcha.getResponse();
+
+            if (password !== confirmPassword) {
+                alert("⚠️ Passwords do not match!");
+                return;
+            }
+
+            if (!captchaResponse) {
+                alert("⚠️ Please complete the CAPTCHA.");
+                return;
+            }
+
+            const formData = new URLSearchParams();
+            formData.append("username", username);
+            formData.append("password", password);
+            formData.append("h-captcha-response", captchaResponse);
+
+            fetch("/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: formData.toString()
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log("Server Response:", data);
+                if (data.includes("Signup successful")) {
+                    alert("✅ Signup successful! Redirecting to login...");
+                    window.location.href = "login.html";
+                } else {
+                    alert("❌ Signup failed: " + data);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html>

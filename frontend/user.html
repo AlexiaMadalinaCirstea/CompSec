@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Secure User Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Welcome, <span id="user-name"></span>!</h2>
+    <button onclick="window.location.href='upload.html'">Upload a Picture Online</button>
+    <button id="logout-btn">Log Out</button>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("/session-status")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.loggedIn) {
+                        document.getElementById("user-name").innerText = data.username;
+                        localStorage.setItem("userSession", btoa(data.username)); // Store session securely
+                    } else {
+                        window.location.href = "/login.html"; // Redirect if not logged in
+                    }
+                })
+                .catch(error => {
+                    console.error("Session validation failed:", error);
+                    window.location.href = "/login.html"; // Redirect on failure
+                });
+            
+            // Logout securely
+            document.getElementById("logout-btn").addEventListener("click", function () {
+                fetch("/logout", { method: "POST" })
+                    .then(() => {
+                        localStorage.removeItem("userSession"); // Remove encrypted session
+                        window.location.href = "/login.html";
+                    })
+                    .catch(error => console.error("Logout failed:", error));
+            });
+            
+            // Anti-session hijacking: Auto-logout after inactivity
+            let logoutTimer;
+            function resetLogoutTimer() {
+                clearTimeout(logoutTimer);
+                logoutTimer = setTimeout(() => {
+                    alert("⛔ Session expired! Logging out for security.");
+                    fetch("/logout", { method: "POST" }).then(() => {
+                        localStorage.removeItem("userSession");
+                        window.location.href = "/login.html";
+                    });
+                }, 10 * 60 * 1000); // Auto-logout after 10 minutes
+            }
+            document.addEventListener("mousemove", resetLogoutTimer);
+            document.addEventListener("keypress", resetLogoutTimer);
+            resetLogoutTimer();
+        });
+    </script>
+</body>
+</html>

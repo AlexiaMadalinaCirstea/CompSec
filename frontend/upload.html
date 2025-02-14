@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Secure File Upload</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <h2>Secure File Upload</h2>
+    
+    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput" accept="image/png, image/jpeg, application/pdf" required>
+        <p><small>Allowed formats: PNG, JPG, PDF (Max size: 5MB)</small></p>
+        
+        <!-- Google reCAPTCHA to prevent bot abuse -->
+        <div class="g-recaptcha" data-sitekey="your-public-sitekey"></div>
+        
+        <button type="submit">Upload</button>
+    </form>
+    
+    <p><a href="gallery.html">View Uploaded Files</a></p>
+    <p><a href="user.html">Back to Home</a></p>
+    
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            const allowedTypes = ["image/png", "image/jpeg", "application/pdf"];
+            const captchaResponse = grecaptcha.getResponse();
+            
+            if (!file) {
+                alert("⛔ Please select a file.");
+                event.preventDefault();
+                return;
+            }
+            
+            if (!allowedTypes.includes(file.type)) {
+                alert("⛔ Invalid file type! Only PNG, JPG, and PDF are allowed.");
+                event.preventDefault();
+                return;
+            }
+            
+            if (file.size > maxSize) {
+                alert("⛔ File size exceeds the 5MB limit.");
+                event.preventDefault();
+                return;
+            }
+            
+            if (!captchaResponse) {
+                alert("⛔ Please complete the CAPTCHA.");
+                event.preventDefault();
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

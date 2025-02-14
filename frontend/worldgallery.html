@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure World Gallery</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .gallery img { width: 200px; height: auto; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🌍 World Gallery</h1>
+    <button onclick="window.location.href='/'">🏠 Back to Home</button>
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("/get-world-gallery")
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to fetch gallery");
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data.loggedIn) {
+                        alert("⛔ Unauthorized! Redirecting to login.");
+                        window.location.href = "/login.html";
+                        return;
+                    }
+                    
+                    const galleryDiv = document.getElementById("gallery");
+                    data.files.forEach(img => {
+                        let imageElement = document.createElement("img");
+                        imageElement.src = `/get-file?filename=${encodeURIComponent(img.filename)}`;
+                        galleryDiv.appendChild(imageElement);
+                    });
+                })
+                .catch(err => console.error("Error loading images:", err));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+    "name": "secure-website",
+    "version": "1.0.0",
+    "description": "Hardened and secure website for cybersecurity testing",
+    "main": "server.js",
+    "scripts": {
+        "start": "cross-env NODE_ENV=production node server.js",
+        "dev": "NODE_ENV=development nodemon server.js"
+    },
+    "dependencies": {
+        "axios": "^1.7.9",
+        "bcrypt": "^5.1.1",
+        "body-parser": "^1.20.3",
+        "csurf": "^1.11.0",
+        "dotenv": "^16.4.7",
+        "express": "^4.21.2",
+        "express-rate-limit": "^7.5.0",
+        "express-session": "^1.18.1",
+        "helmet": "^7.0.0",
+        "multer": "^1.4.5-lts.1",
+        "sqlite3": "^5.1.7"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "eslint": "^8.50.0",
+        "nodemon": "^3.0.1"
+    },
+    "engines": {
+        "node": "^18.0.0"
+    },
+    "keywords": [
+        "security",
+        "OWASP",
+        "hardened",
+        "web",
+        "pentagon-security"
+    ],
+    "author": "Alexia-Madalina Cirstea & Alexandra-Valentina Stan"
+}

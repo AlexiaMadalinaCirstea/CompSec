@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About This Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>About This Project</h1>
+        <p>
+            This website is intentionally designed to be **vulnerable** for learning and testing security concepts.
+            It allows users to practice identifying and exploiting security flaws while understanding how to patch them.
+        </p>
+        
+        <h2>🔍 Project Goals</h2>
+        <ul>
+            <li>Teach **OWASP Top 10 vulnerabilities** in a hands-on manner.</li>
+            <li>Demonstrate **SQL Injection**, **Broken Access Control**, and **Security Misconfigurations**.</li>
+            <li>Help security researchers and developers practice **penetration testing**.</li>
+        </ul>
+
+        <h2>⚠️ Known Vulnerabilities</h2>
+        <ul>
+            <li>🚨 **SQL Injection** (Login page vulnerable to direct query manipulation).</li>
+            <li>🔓 **Broken Access Control** (Anyone can access `/admin`).</li>
+            <li>📂 **Security Misconfiguration** (Exposing error messages in responses).</li>
+        </ul>
+
+        <h2>🛠 Future Fixes</h2>
+        <ul>
+            <li>Use **prepared statements** to prevent SQL Injection.</li>
+            <li>Implement **authentication & session management**.</li>
+            <li>Remove **exposed error messages**.</li>
+        </ul>
+
+        <p>📚 This project is for educational purposes only. Please do not use these techniques on unauthorized systems.</p>
+
+        <a href="index.html">⬅ Back to Home</a>
+    </div>
+</body>
+</html>
